@@ -17,6 +17,9 @@ inputs:
         error: Fail the action with an error message
         ignore: Do not output any warnings or errors, the action does not fail
     default: 'warn'
+  zip:
+    description: 'Zip the files before upload'
+    default: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

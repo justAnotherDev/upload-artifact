@@ -8,6 +8,7 @@ import {UploadInputs} from './upload-inputs'
 export function getInputs(): UploadInputs {
   const name = core.getInput(Inputs.Name)
   const path = core.getInput(Inputs.Path, {required: true})
+  const zip = core.getInput(Inputs.Zip) == 'true'
 
   const ifNoFilesFound = core.getInput(Inputs.IfNoFilesFound)
   const noFileBehavior: NoFileOptions = NoFileOptions[ifNoFilesFound]
@@ -25,6 +26,7 @@ export function getInputs(): UploadInputs {
   return {
     artifactName: name,
     searchPath: path,
-    ifNoFilesFound: noFileBehavior
+    ifNoFilesFound: noFileBehavior,
+    zip: zip
   }
 }

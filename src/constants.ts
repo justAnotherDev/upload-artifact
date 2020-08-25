@@ -1,7 +1,8 @@
 export enum Inputs {
   Name = 'name',
   Path = 'path',
-  IfNoFilesFound = 'if-no-files-found'
+  IfNoFilesFound = 'if-no-files-found',
+  Zip = 'zip'
 }
 
 export enum NoFileOptions {

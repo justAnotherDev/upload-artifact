@@ -15,4 +15,9 @@ export interface UploadInputs {
    * The desired behavior if no files are found with the provided search path
    */
   ifNoFilesFound: NoFileOptions
+
+  /**
+   * Zip the files before upload
+   */
+  zip: boolean
 }

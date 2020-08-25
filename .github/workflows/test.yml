@@ -1,13 +1,5 @@
 name: Test
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
-  pull_request:
-    paths-ignore:
-      - '**.md'
+on: push
 
 jobs:
 
@@ -17,6 +9,7 @@ jobs:
     strategy:
       matrix:
         runs-on: [ubuntu-latest, macos-latest, windows-latest]
+        zip: [false, true]
       fail-fast: false
 
     runs-on: ${{ matrix.runs-on }}
@@ -39,8 +32,8 @@ jobs:
     - name: npm test
       run: npm test
 
-    - name: Lint
-      run: npm run lint
+    # - name: Lint
+    #   run: npm run lint
 
     - name: Format
       run: npm run format-check
@@ -59,7 +52,8 @@ jobs:
     - name: 'Upload artifact #1'
       uses: ./
       with:
-        name: 'Artifact-A'
+        name: 'Artifact-A-${{ matrix.runs-on }}-${{ matrix.zip }}'
+        zip: ${{ matrix.zip }}
         path: path/to/dir-1/file1.txt
 
     # Upload using a wildcard pattern, name should default to 'artifact' if not provided
@@ -67,19 +61,22 @@ jobs:
       uses: ./
       with:
         path: path/**/dir*/
+        zip: ${{ matrix.zip }}
 
     # Upload a directory that contains a file that will be uploaded with GZip
     - name: 'Upload artifact #3'
       uses: ./
       with:
-        name: 'GZip-Artifact'
+        name: 'GZip-Artifact-${{ matrix.runs-on }}-${{ matrix.zip }}'
+        zip: ${{ matrix.zip }}
         path: path/to/dir-3/
 
     # Upload a directory that contains a file that will be uploaded with GZip
     - name: 'Upload artifact #4'
       uses: ./
       with:
-        name: 'Multi-Path-Artifact'
+        name: 'Multi-Path-Artifact-${{ matrix.runs-on }}-${{ matrix.zip }}'
+        zip: ${{ matrix.zip }}
         path: |
           path/to/dir-1/*
           path/to/dir-[23]/*
@@ -91,7 +88,7 @@ jobs:
     - name: 'Download artifact #1'
       uses: actions/download-artifact@v1
       with:
-        name: 'Artifact-A'
+        name: 'Artifact-A-${{ matrix.runs-on }}-${{ matrix.zip }}'
         path: some/new/path
 
     - name: 'Verify Artifact #1'
@@ -132,7 +129,7 @@ jobs:
     - name: 'Download artifact #3'
       uses: actions/download-artifact@v1
       with:
-        name: 'GZip-Artifact'
+        name: 'GZip-Artifact-${{ matrix.runs-on }}-${{ matrix.zip }}'
         path: gzip/artifact/path
 
     # Because a directory was used as input during the upload the parent directories, path/to/dir-3/, should not be included in the uploaded artifact
@@ -152,7 +149,7 @@ jobs:
     - name: 'Download artifact #4'
       uses: actions/download-artifact@v1
       with:
-        name: 'Multi-Path-Artifact'
+        name: 'Multi-Path-Artifact-${{ matrix.runs-on }}-${{ matrix.zip }}'
         path: multi/artifact
 
     - name: 'Verify Artifact #4'
